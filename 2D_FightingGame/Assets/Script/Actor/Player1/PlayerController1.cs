@@ -15,7 +15,6 @@ public class PlayerController1 : MonoBehaviour
     private int attackTypeNum = 0;       //　攻撃したときの属性番号　0:攻撃してない、
                                          //　1:上段、2:中段、3:下段    
     public Animator animator;      //アニメーション
-    public PlayerHPGaugeUI gaugeUI;
     public Command1 inputAxes;
     private Vector3 moveVel;
     private Rigidbody2D rb2d;
@@ -76,29 +75,26 @@ public class PlayerController1 : MonoBehaviour
     /// </summary>
     void AttackControl()
     {
-        //　弱攻撃
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetButtonDown("Attack_A_1"))
         {
             animator.SetTrigger("Attack_A");
             isAttack = true;
         }
 
         //　中攻撃
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetButtonDown("Attack_B_1"))
         {
             animator.SetTrigger("Attack_B");
             isAttack = true;
-
         }
 
         //　強攻撃
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetButtonDown("Attack_C_1"))
         {
             animator.SetTrigger("Attack_C");
             isAttack = true;
-
         }
-
+   
     }
     
     /// <summary>

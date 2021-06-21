@@ -6,7 +6,6 @@ public class CharacterControl : MonoBehaviour
 {
     private bool regularDirec;       //正規向き　true = 右向き、false = 左向き
     private bool isGraund;           //着地してるか
-    private float move = 0.5f;              //
     private float pushForce = 6.0f;
     private bool controller = false;    //　コントロール
 
@@ -43,7 +42,6 @@ public class CharacterControl : MonoBehaviour
 
 
         transform.position += pushingVec;
-
     }
 
 

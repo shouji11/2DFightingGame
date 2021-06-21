@@ -9,8 +9,8 @@ public class ColliderContoller : MonoBehaviour
     private DamageDealer damageDealer;
     private bool HitCancelPermit = false; //　ヒットキャンセル許可
 
-    private bool isDamageHitStop = false;
-    private bool isAttackHitStop = false;
+    private bool isDamageHitStop = false; //　ダメージ受けた時のヒットストップ
+    private bool isAttackHitStop = false; //　ダメージ与えた時のヒットストップ
     private float attackStop, damageStop;
 
     // Start is called before the first frame update

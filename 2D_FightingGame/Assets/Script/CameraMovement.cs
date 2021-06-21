@@ -8,7 +8,8 @@ public class CameraMovement : MonoBehaviour
     public GameObject player1, player2;
 
     private Transform player1_pos, player2_pos;
-    
+    private Camera camera;
+
     private float moveSpeed;
 
     private bool distOver = false;
@@ -19,6 +20,7 @@ public class CameraMovement : MonoBehaviour
     {
         player1_pos = player1.GetComponent<Transform>();
         player2_pos = player2.GetComponent<Transform>();
+        camera = GetComponent<Camera>();
 
         moveSpeed = 1f;
     }
@@ -27,50 +29,46 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         moveCamera();
-        //PlayersDist();
 
     }
-       
+
     void moveCamera()
     {
+        const float moveEndX = 7.8f; //カメラの移動限界
+
+        //画面の中心
         center = (player2_pos.transform.position.x +
             player1_pos.transform.position.x) /2;
 
+        //カメラの移動
         transform.position = new Vector3(center * moveSpeed, -1.51f, -10);
 
         //カメラが端についた
-        if(transform.position.x <= -7.89f)
+        if(transform.position.x <= -moveEndX)
         {
-            transform.position = new Vector3(-7.89f, -1.51f,-10);
+            transform.position = new Vector3(-moveEndX, -1.51f,-10);
         }
-        else if (transform.position.x >= 7.94f)
+        else if (transform.position.x >= moveEndX)
         {
-            transform.position = new Vector3(7.94f, -1.51f, -10);
-
+            transform.position = new Vector3(moveEndX, -1.51f, -10);
         }
         
     }
 
-    void PlayersDist()
-    {
+    void CameraZoom()
+    {        
         //プレイヤー間の距離
-        float distx = (player2_pos.transform.position.x- player1_pos.transform.position.x);
-        const int designaDist = 11;
+        float distx = (player2_pos.transform.position.x- 
+            player1_pos.transform.position.x);
+               
+        float view = camera.fieldOfView - distx;
 
-        //Debug.Log("距離" + distx);
-        if (distx >= designaDist)
-        {
-            player1.transform.position = player1_pos.transform.position;
-            player2.transform.position = player2_pos.transform.position;
-
-            //transform.position = new Vector3(distx , -1.51f, -10);
-
-        }
+        camera.fieldOfView = view;
 
     }
 
     /// <summary>
-    /// 演出用
+    /// 演出(勝利時勝った側に移動する)
     /// </summary>
     void Direction(bool p1,bool p2)
     {
@@ -96,7 +94,6 @@ public class CameraMovement : MonoBehaviour
         
     }
 
-
-
+    
 }
     

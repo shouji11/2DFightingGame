@@ -25,7 +25,6 @@ public class PlayerController2 : MonoBehaviour
 
     const string ObjName = "Player2";
 
-    public PlayerHPGaugeUI gaugeUI;
     public Command2 inputAxes;
 
     private Vector3 moveVel;

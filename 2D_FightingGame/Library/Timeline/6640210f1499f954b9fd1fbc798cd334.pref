@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79cb9ecc0d4a6d428ab98a681a33897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeInFrames: 1
   timeAreaShownRange: {x: -0.22900441, y: 7.9464526}
-  showAudioWaveform: 1
   trackScale: 1
   playRangeEnabled: 0
   timeAreaPlayRange: {x: 3.4028235e+38, y: 3.4028235e+38}
   windowTime: 0
   verticalScroll: 0
   showMarkerHeader: 0
+  sequencerHeaderWidth: 315
   m_Keys:
   - {fileID: 1793801357427037986, guid: 6640210f1499f954b9fd1fbc798cd334, type: 2}
   - {fileID: 4393653763905562054, guid: 6640210f1499f954b9fd1fbc798cd334, type: 2}
@@ -59,6 +58,7 @@ MonoBehaviour:
       y: 1
       width: 1
       height: 1
+    trackHeightExtension: 0
     m_MarkerTimeStampsKeys: 
     m_MarkerTimeStampsValues: 
   - collapsed: 0
@@ -94,6 +94,7 @@ MonoBehaviour:
       y: 1
       width: 1
       height: 1
+    trackHeightExtension: 0
     m_MarkerTimeStampsKeys: 
     m_MarkerTimeStampsValues: 
   - collapsed: 0
@@ -129,5 +130,6 @@ MonoBehaviour:
       y: 1
       width: 1
       height: 1
+    trackHeightExtension: 0
     m_MarkerTimeStampsKeys: 
     m_MarkerTimeStampsValues: 
