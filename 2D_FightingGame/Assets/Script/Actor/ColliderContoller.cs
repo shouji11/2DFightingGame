@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ColliderContoller : MonoBehaviour
 {
-    public Collider2D AttackCollider2d ;
+    public Collider2D AttackCollider2d;
     private Animator animator;
     private DamageDealer damageDealer;
     private bool HitCancelPermit = false; //　ヒットキャンセル許可
 
     private bool isDamageHitStop = false; //　ダメージ受けた時のヒットストップ
     private bool isAttackHitStop = false; //　ダメージ与えた時のヒットストップ
+    private bool isAttack = false;        //　アタックしたか
+    
     private float attackStop, damageStop;
 
     // Start is called before the first frame update
@@ -54,14 +56,20 @@ public class ColliderContoller : MonoBehaviour
     public void PunchOn()
     {
         AttackCollider2d.enabled = true;
-                
+        isAttack = true;
     }
 
     public void PunchOff()
     {
         AttackCollider2d.enabled = false;
         HitCancelPermit = false;
+        isAttack = false;
 
+    }
+
+    public bool getIsAttack()
+    {
+        return isAttack;
     }
 
     /// <summary>

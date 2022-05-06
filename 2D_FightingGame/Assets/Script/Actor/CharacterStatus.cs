@@ -9,10 +9,10 @@ public class CharacterStatus : MonoBehaviour
     public float moveSpeed;//機動力
     public float jumpPower; //ジャンプ力
 
-    //専用アニメーション
-    public AnimatorOverrideController animatiorOverride;
-    private Animator animator;
-    private AudioClip[] audioClip;
+    //各キャラクターのアニメーション
+    //public AnimatorOverrideController animatiorOverride;
+    //private Animator animator;
+    //private AudioClip[] audioClip;
 
     /// <summary>
     /// 体力取得
@@ -49,13 +49,7 @@ public class CharacterStatus : MonoBehaviour
     {
         return moveSpeed;
     }
-
-    public Animator GetAnimator()
-    {
-        
-        return animator;
-    }
-
+    
 
 
 }

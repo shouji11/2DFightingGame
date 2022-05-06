@@ -2,16 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//どっちのプレイヤーのコントロールするか
+public enum Player_Controls
+{
+    Note,
+    Player1,
+    Player2
+}
+
+
 public class Command1 : MonoBehaviour
 {
-    //private static int keyNum;
-    //private int oldKey;
+    public Player_Controls Player = Player_Controls.Note;
 
-    private int frameCount;
     int axes;
     bool onAttack_A, onAttack_B, onAttack_C;
-    private List<int> command = new List<int>();
+    private string controls;
+    //private int frameCount;
+    //private List<int> command = new List<int>();
+   
+    public void Init()
+    {
+        controls = Player.ToString(); //
+        onAttack_A = false;
+        onAttack_B = false;
+        onAttack_C = false;
 
+    }
 
     /// <summary>
     /// 方向キー傾き(テンキー読み)
@@ -19,7 +36,7 @@ public class Command1 : MonoBehaviour
     /// <returns> </returns>
     public int getAxes()
     {
-
+        
         if (Input.GetAxisRaw("Vertical1") > 0.9)
         {
             if (Input.GetAxisRaw("Horizontal1") > 0.9)
@@ -100,23 +117,10 @@ public class Command1 : MonoBehaviour
         }
 
     }
-
-    void countFrame()
+    
+    public Player_Controls GetPlayer_Contral()
     {
-
-
-
-        //return frameCount = (int)Time.deltaTime;
-
+        return Player;
     }
-
-    void commands()
-    {
-       // if(axes )
-        
-
-
-    }
-
 
 }

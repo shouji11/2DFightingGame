@@ -15,30 +15,26 @@ public class PlayerController2 : MonoBehaviour
     bool isAttack = false;
     bool isJump = false;          //ジャンプしてるか
 
-    private int attackTypeNum = 0;       //　攻撃したときの属性番号　0:攻撃してない、
-                                         //　1:上段、2:中段、3:下段
-
     public Animator animator;      //アニメーション
     private Rigidbody2D rb2d;
     private CharacterStatus charStatus;
     private CharacterControl characterControl;
+    ColliderContoller P1_control;
 
     const string ObjName = "Player2";
 
     public Command2 inputAxes;
-
     private Vector3 moveVel;
     private Vector2 jumpForceVec; //ジャンプ
-
-
+    
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
-
         charStatus = GameObject.Find(ObjName).GetComponent<CharacterStatus>();
         characterControl = GameObject.Find(ObjName).GetComponent<CharacterControl>();
+        P1_control = GameObject.Find("Player").GetComponent<ColliderContoller>();
 
     }
 
@@ -46,17 +42,19 @@ public class PlayerController2 : MonoBehaviour
     void Update()
     {
         controller = characterControl.GetController();
+        isGraund = characterControl.IsGraund();
 
-        if (!controller) return;
+        if (!controller) return; //コントロール出来ないときは下の処理をしない
 
         regularDirec = characterControl.PlayerDirection();
 
-        if (characterControl.IsGraund())
+        if (isGraund)
         {
+            characterControl.PlayerFlip();
+
+            //guardController();
 
             JumpControl();
-
-            characterControl.PlayerFlip();
 
             CrouchControl();
 
@@ -65,14 +63,14 @@ public class PlayerController2 : MonoBehaviour
         AttackControl();
         characterControl.DamageControl();
         characterControl.DownControl();
-        
+
     }
 
     private void FixedUpdate()
     {
         if (!controller) return;
 
-        if (characterControl.IsGraund())
+        if (isGraund)
         {
             MovementControl();
 
@@ -90,25 +88,23 @@ public class PlayerController2 : MonoBehaviour
     /// </summary>
     void AttackControl()
     {
+
         //　弱攻撃
         if (Input.GetButtonDown("Attack_A_2"))
         {
             animator.SetTrigger("Attack_A");
-            isAttack = true;
         }
 
         //　中攻撃
         if (Input.GetButtonDown("Attack_B_2"))
         {
             animator.SetTrigger("Attack_B");
-            isAttack = true;
         }
 
         //　強攻撃
         if (Input.GetButtonDown("Attack_C_2"))
         {
             animator.SetTrigger("Attack_C");
-            isAttack = true;
         }
 
     }
@@ -143,7 +139,6 @@ public class PlayerController2 : MonoBehaviour
 
             rb2d.velocity = jumpForceVec * charStatus.GetJumpPower();
 
-            isGraund = false;
             animator.PlayInFixedTime("Jump", 0);
         }
     }
@@ -169,7 +164,7 @@ public class PlayerController2 : MonoBehaviour
                 isAdvance = true;
             }
 
-            if (!isCrouch)
+            if (!isCrouch || !EnableGuard)
                 moveVel.x = -1;
         }
 
@@ -185,12 +180,13 @@ public class PlayerController2 : MonoBehaviour
                 isRecession = true;
             }
 
-            if (!isCrouch)
+            if (!isCrouch || !EnableGuard)
                 moveVel.x = 1;
         }
 
         animator.SetBool("Recession", isRecession);
         animator.SetBool("Advance", isAdvance);
+
         moveVel.x = moveVel.x * charStatus.GetMoveSpeed() * Time.deltaTime;
 
     }
@@ -214,54 +210,27 @@ public class PlayerController2 : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// ガード反応距離
-    /// </summary>
-    bool EnableGuardReactionDist()
+    void GuardController()
     {
-        bool enableGuardMotion = false;
+        EnableGuard = false;
 
-        //　自分と相手の距離
-        float Distance = transform.position.x -
-            GameObject.Find("Player").transform.position.x;
-
-        if (Distance > -2)
-        {
-            enableGuardMotion = true;
-        }
-
-        return enableGuardMotion;
-    }
-
-    void guardController()
-    {
-        PlayerController1 controller = 
-            GameObject.Find("Player").GetComponent<PlayerController1>();
-
-        if (!controller.getAttack()) return;
         //　向き
         if (regularDirec)
         {
-            if (inputAxes.getAxes() == 4)
+            if (inputAxes.getAxes() == 4 ||
+                inputAxes.getAxes() == 1)
             {
                 EnableGuard = true;
-            }
-            else
-            {
-                EnableGuard = false;
             }
 
         }
         else
         {
-            if (inputAxes.getAxes() == 6)
+            if (inputAxes.getAxes() == 6 ||
+                inputAxes.getAxes() == 3)
             {
                 EnableGuard = true;
 
-            }
-            else
-            {
-                EnableGuard = false;
             }
         }
 

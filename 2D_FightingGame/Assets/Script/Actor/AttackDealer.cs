@@ -12,10 +12,9 @@ public class AttackDealer : MonoBehaviour
         return HitDamage;
     }
 
-
     void OnTriggerEnter2D(Collider2D collider2D)
     {
-        if(collider2D.tag == DamageTag)
+        if(collider2D.CompareTag(DamageTag))
         {
             HitDamage = true;
         }
@@ -23,7 +22,7 @@ public class AttackDealer : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider2D)
     {
-        if (collider2D.tag == DamageTag)
+        if (collider2D.CompareTag(DamageTag))
         {
             HitDamage = false;
         }
@@ -32,7 +31,7 @@ public class AttackDealer : MonoBehaviour
     void OnTriggerExit2D(Collider2D collider2D)
     {
 
-        if (collider2D.tag == DamageTag)
+        if (collider2D.CompareTag(DamageTag))
         {
             HitDamage = false;
         }

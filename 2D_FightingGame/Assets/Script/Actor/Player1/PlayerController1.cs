@@ -12,17 +12,15 @@ public class PlayerController1 : MonoBehaviour
     bool isAttack = false;　　//
     const string ObjName = "Player";
     
-    private int attackTypeNum = 0;       //　攻撃したときの属性番号　0:攻撃してない、
-                                         //　1:上段、2:中段、3:下段    
-    public Animator animator;      //アニメーション
-    public Command1 inputAxes;
+    [SerializeField] Animator animator;      //アニメーション
+    [SerializeField] Command1 inputAxes;
     private Vector3 moveVel;
     private Rigidbody2D rb2d;
     private CharacterStatus charStatus;
     private CharacterControl charControl;
     private Vector2 jumpForceVec; //ジャンプ
+    ColliderContoller P2_control;
 
-      
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +28,8 @@ public class PlayerController1 : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         charStatus = GameObject.Find(ObjName).GetComponent<CharacterStatus>();
         charControl = GameObject.Find(ObjName).GetComponent<CharacterControl>();
+        P2_control = GameObject.Find("Player2").GetComponent<ColliderContoller>();
+
     }
 
     // Update is called once per frame
@@ -42,10 +42,11 @@ public class PlayerController1 : MonoBehaviour
 
         if (charControl.IsGraund())
         {
-
-            JumpControl();
+            GuardController();
 
             charControl.PlayerFlip();
+
+            JumpControl();
 
             CrouchControl();
 
@@ -62,7 +63,6 @@ public class PlayerController1 : MonoBehaviour
         if (charControl.IsGraund())
         {
             MovementControl();
-
         }
 
         transform.position += moveVel;
@@ -152,7 +152,7 @@ public class PlayerController1 : MonoBehaviour
                 isAdvance = true;
             }
 
-            if (!isCrouch)
+            if (!isCrouch || !EnableGuard)
                 moveVel.x = -1;
         }
 
@@ -168,7 +168,7 @@ public class PlayerController1 : MonoBehaviour
                 isRecession = true;
             }
 
-            if (!isCrouch)
+            if (!isCrouch || !EnableGuard)
                 moveVel.x = 1;
         }
         
@@ -176,7 +176,6 @@ public class PlayerController1 : MonoBehaviour
         animator.SetBool("Advance", isAdvance);
 
         moveVel.x = moveVel.x * charStatus.GetMoveSpeed() * Time.deltaTime;
-
     }
 
     /// <summary>
@@ -195,62 +194,38 @@ public class PlayerController1 : MonoBehaviour
         }
 
         animator.SetBool("Crouch", isCrouch);
-
     }
 
     /// <summary>
-    /// ガード反応距離
+    /// ガード制御
     /// </summary>
-    //bool EnableGuardReactionDist()
-    //{
-    //    bool enableGuardMotion = false;
-
-    //    //　自分と相手の距離
-    //    float DistanceX = transform.position.x - Opponent.transform.position.x;
-
-    //    if (DistanceX > -2)
-    //    {
-    //        enableGuardMotion = true;
-    //    }
-
-    //    return enableGuardMotion;
-    //}
-
-    void guardController()
+    void GuardController()
     {
-        PlayerController2 controller =
-            GameObject.Find("Player2").GetComponent<PlayerController2>();
-
-        if (!controller.getAttack()) return;
         EnableGuard = false;
 
         //　向き
         if (regularDirec)
         {
-            if (inputAxes.getAxes() == 4)
+            if (inputAxes.getAxes() == 4 ||
+                inputAxes.getAxes() == 1)
             {
-                EnableGuard = true;
+                if (P2_control.getIsAttack())
+                    EnableGuard = true;
             }
-            else
-            {
-            }
-
+           
         }
         else
         {
-            if (inputAxes.getAxes() == 6)
+            if (inputAxes.getAxes() == 6 ||
+                inputAxes.getAxes() == 3)
             {
-                EnableGuard = true;
-
+                if (P2_control.getIsAttack())
+                    EnableGuard = true;
             }
-            else
-            {
-                EnableGuard = false;
-            }
+           
         }
-
+        
         animator.SetBool("Gurad", EnableGuard);
-
     }
 
     public bool getAttack()

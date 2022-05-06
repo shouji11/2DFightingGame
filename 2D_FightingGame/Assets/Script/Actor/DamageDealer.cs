@@ -38,7 +38,7 @@ public class DamageDealer : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider2D)
     {
         //　相手のAttackとついたタグと当たったら
-        if (collider2D.tag == AttackTag)
+        if (collider2D.CompareTag(AttackTag))
         {
 
             HitAttack = true;

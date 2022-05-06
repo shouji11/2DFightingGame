@@ -6,20 +6,16 @@ public class CharacterControl : MonoBehaviour
 {
     private bool regularDirec;       //正規向き　true = 右向き、false = 左向き
     private bool isGraund;           //着地してるか
-    private float pushForce = 6.0f;
-    private bool controller = false;    //　コントロール
+    private float pushForce = 6.0f;  //押す力
+    private bool controller = false; //コントロール
 
-    public CharacterStatus characterStatus;
-    public DamageDealer damageDealer, damageDealer2;
-    public PushingBox pushing;
-    public PlayerHPGaugeUI gaugeUI;
-    public Animator animator;
-
-    [SerializeField]
-    private Transform Opponent;
-    
-    [SerializeField]
-    private HitGround hitGround;
+    [SerializeField] CharacterStatus characterStatus;
+    [SerializeField] DamageDealer damageDealer, damageDealer2;
+    [SerializeField] PushingBox pushing;
+    [SerializeField] PlayerHPGaugeUI gaugeUI;
+    [SerializeField] Animator animator;
+    [SerializeField] Transform Opponent;    
+    [SerializeField] HitGround hitGround;
 
     private Vector3 pushingVec;
 
@@ -30,16 +26,15 @@ public class CharacterControl : MonoBehaviour
         animator = GetComponent<Animator>();
         damageDealer.GetComponent<DamageDealer>();
         damageDealer2.GetComponent<DamageDealer>();
-        pushing.GetComponent<PushingBox>();
-        
+        pushing.GetComponent<PushingBox>();        
     }
 
 
     private void FixedUpdate()
     {
-        isPushingGround();
-        isPushingPlayer();
-
+        isPushingGround(); //キャラクターと地面の押し合い
+        isPushingPlayer(); //キャラクター同士の押し合い
+        EnableGuardReactionDist(); //
 
         transform.position += pushingVec;
     }
@@ -95,7 +90,6 @@ public class CharacterControl : MonoBehaviour
         {
             animator.SetBool("Down", true);
         }
-
     }
 
     /// <summary>
@@ -159,7 +153,7 @@ public class CharacterControl : MonoBehaviour
     /// </summary>
     void isPushingGround()
     {
-        if (!IsGraund()) return;
+        if (!isGraund) return;
 
         pushingVec.y = 0 ;
 
@@ -187,6 +181,24 @@ public class CharacterControl : MonoBehaviour
      
         pushingVec.x = pushVec * pushForce * Time.deltaTime;
         
+    }
+
+    /// <summary>
+    /// ガード反応距離
+    /// </summary>
+    public bool EnableGuardReactionDist()
+    {
+        const short guardEnable = -4;
+
+        //　自分と相手の距離
+        float DistanceX = transform.position.x - Opponent.transform.position.x;
+
+        if (DistanceX < guardEnable)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>

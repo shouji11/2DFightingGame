@@ -11,7 +11,7 @@ public class Collider2dVisualizer
 
   
     
-    public static void LineRenderer()
+    private void LineRenderer()
     {
         //Debug.DrawLine()
     }

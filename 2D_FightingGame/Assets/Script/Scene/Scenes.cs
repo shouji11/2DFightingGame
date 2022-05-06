@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Scene {
 
+    Note,
     Taitle,
     CharacterSelect,
     GamePlay,
@@ -13,7 +15,7 @@ public enum Scene {
 // シーンマネージャークラス
 public class Scenes : MonoBehaviour
 {
-    Scene scene = Scene.Taitle;
+    Scene scene = Scene.Note;
 
     const string title = "Title";
     const string game = "GamePlay";
@@ -29,4 +31,12 @@ public class Scenes : MonoBehaviour
     {
         
     }
+
+
+    void NextScene()
+    {
+        SceneManager.LoadScene(scene.ToString());
+        return;
+    }
+
 }

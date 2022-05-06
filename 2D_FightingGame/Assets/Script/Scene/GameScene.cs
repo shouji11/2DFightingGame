@@ -6,12 +6,12 @@ using UnityEngine.Playables;
 
 public class GameScene : MonoBehaviour
 {
-    public PlayerHPGaugeUI vitality1P, vitality2P;
-    public Timer timer;　//タイマー
-    public WinMark1 winMark1;
-    public WinMark2 winMark2;
-    public GameObject player1, player2; //　プレイヤーオブジェ
-    public GameObject koAnimeObj,timeoverAnimeObj,
+    [SerializeField] PlayerHPGaugeUI vitality1P, vitality2P;
+    [SerializeField] Timer timer;　//タイマー
+    [SerializeField] WinMark1 winMark1;
+    [SerializeField] WinMark2 winMark2;
+    [SerializeField] GameObject player1, player2; //　プレイヤーオブジェ
+    [SerializeField] GameObject koAnimeObj,timeoverAnimeObj,
         p1winAnimeObj, p2winAnimeObj;   //アニメオブジェ
     
     private CharacterControl cont1, cont2;
@@ -134,14 +134,12 @@ public class GameScene : MonoBehaviour
 
         if (waitJudgeFlag)
         {
-
+            //　勝利判断
             WinJudge();
-            //次のラウンドに進む
             waitJudgeFlag = false;
-
         }
+
         // 勝利演出
-        
         WinDirection();
         yield return new WaitForSeconds(1.5f);
 
@@ -179,7 +177,7 @@ public class GameScene : MonoBehaviour
         RoundDirector2.enabled = false;
         RoundDirectorFinal.enabled = false;
 
-        roundStartFlag = true;
+        roundStartFlag = true; 
         waitJudgeFlag = true; //勝利判断を1回だけ通る用
 
     }
@@ -351,7 +349,6 @@ public class GameScene : MonoBehaviour
 
         }
 
-
     }
 
     /// <summary>
@@ -371,7 +368,6 @@ public class GameScene : MonoBehaviour
             p2winAnimeObj.SetActive(true);
 
             p2animator.SetBool("2pwin", P2_WinFlag);
-
         }
 
         //　カメラを勝者側に移動
